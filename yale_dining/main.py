@@ -1,5 +1,4 @@
 import requests
-from .models import *
 
 
 class ConnectionError(Exception):
@@ -11,9 +10,19 @@ class YaleDining:
     API_ROOT = 'http://www.yaledining.org/fasttrack/'
     API_VERSION = 3
 
-    def get(endpoint, version=3, make_list=True, params={}):
+    def __init__(self):
+        pass
+
+    def get(self, endpoint: str, make_list: bool = True, params: dict = {}):
+        """
+        Make a GET request to the dining API.
+
+        :param endpoint: path to resource desired.
+        :param make_list: should data be restructured into a list of dictionaries for easier manipulation?
+        :param params: dictionary of custom params to add to request.
+        """
         custom_params = {
-            'version': version,
+            'version': seelf.API_VERSION,
         }
         custom_params.update(params)
         request = requests.get(self.API_ROOT + endpoint, params=custom_params)
@@ -26,5 +35,5 @@ class YaleDining:
                 ]
             return data
         else:
-            # TODO: actually say what's wrong
-            raise Exception
+            # TODO: Can we be more helpful?
+            raise ConnectionError('API request failed.')
