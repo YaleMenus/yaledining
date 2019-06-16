@@ -22,7 +22,7 @@ class YaleDining:
         :param params: dictionary of custom params to add to request.
         """
         custom_params = {
-            'version': seelf.API_VERSION,
+            'version': self.API_VERSION,
         }
         custom_params.update(params)
         request = requests.get(self.API_ROOT + endpoint, params=custom_params)
