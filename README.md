@@ -8,19 +8,19 @@
 First, install the module:
 
 ```sh
-pip3 install yale_dining
+pip3 install yaledining
 ```
 
 Then, to use these functions, you must import the `tbapy` module:
 
 ```py
-import yale_dining
+import yaledining
 ```
 
 Before using the library, you must instantiate its class, for example:
 
 ```py
-dining = yale_dining.YaleDining()
+dining = yaledining.YaleDining()
 ```
 
 This API does not require authentication.
