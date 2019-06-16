@@ -7,7 +7,9 @@
 ## Setup
 First, install the module:
 
-    pip3 install yale_dining
+```sh
+pip3 install yale_dining
+```
 
 Then, to use these functions, you must import the `tbapy` module:
 
@@ -27,12 +29,11 @@ The Blue Alliance's API requires that all applications identify themselves with 
 
 
 ## Retrieval Functions
-You may specify `simple=True` to get only vital data on some models or lists of models, or you may specify `keys=True` to get a list of the keys for a list rather than full data on each model. It is recommended to use these options if you do not need full data.
-
-Some requests support `year` and other optional parameters, which are recommended to use to narrow down your results.
-* `tba.status()` - Get TBA's status.
-* `tba.teams([page], [year], [simple/keys])` - Get a list of of valid teams, where `page * 500` is the starting team number. If no page is provided, all teams will be fetched.
-* `tba.team(team, [simple])` - Get a team's data. `team` can be an integer team number of a string-form `'frc####'` identifier.
+- `get_locations()`
+- `get_menus(location_id)`
+- `get_nutrition(item_id)`
+- `get_traits(item_id)`
+- `get_ingredients(item_id)`
 
 See `example.py` for several usage examples.
 
