@@ -37,3 +37,18 @@ class YaleDining:
         else:
             # TODO: Can we be more helpful?
             raise ConnectionError('API request failed.')
+
+    def get_locations(self):
+        return self.get('locations.cfm')
+
+    def get_menus(self, location_id: int):
+        return self.get('menus.cfm', params={'location': location_id})
+
+    def get_nutrition(self, item_id: int):
+        return self.get('menuitem-nutrition.cfm', params={'MENUITEMID': item_id})[0]
+
+    def get_traits(self, item_id: int):
+        return self.get('menuitem-codes.cfm', params={'MENUITEMID': item_id})[0]
+
+    def get_ingredients(self, item_id: int):
+        return self.get('menuitem-ingredients.cfm', params={'MENUITEMID': item_id})
