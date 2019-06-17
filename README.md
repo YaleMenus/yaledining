@@ -10,7 +10,16 @@ This API seeks to enable Pythonic code using Yale Dining API data. For this reas
 For example:
 - Names are put in standardized, Pythonic snake case (eg: `DININGLOCATIONNAME` becomes `dining_location_name`)
 - Some clumsy naming is redone entirely (eg: locations' `ID_LOCATION` field simply is called `id` since the fact that it identifies a `Location` is implicit)
--
+- More intuitive types are used, for example booleans over 0/1 integers
+- `Location`'s `GEOLOCATION` property, while still accessible through `geolocation`, can be accessed through `latitude` and `longitude` propeties as well
+- `Location` managers can be accessed as their own objects through the tuple `Location.managers`, with easier `name` and `email` properties
+
+If you do **NOT** desire to use these enhancements, you may get the `raw` property of an object this wrapper returns:
+```py
+location = api.get_locations()[0]  # -> returns Location
+location.raw  # -> {'ID_LOCATION': '1', ... }
+```
+Doing so will get a dictionary of an object in similar format to how it's normally returned.
 
 ## Setup
 First, install the module:
@@ -28,7 +37,8 @@ import yaledining
 Before using the library, you must instantiate its class, for example:
 
 ```py
-dining = yaledining.YaleDining()
+api = yaledining.YaleDining()
+# "api" name is just an example, this may be anything you desire
 ```
 
 This API does not require authentication.
