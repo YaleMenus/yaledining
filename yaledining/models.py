@@ -42,6 +42,7 @@ class Location(_base_model):
         num_managers = 0
         while num_managers < 4:
             num_managers += 1
+
             manager = (location[f'MANAGER{num_managers}NAME'],
                        location[f'MANAGER{num_managers}EMAIL'])
             if manager == (None, None):
