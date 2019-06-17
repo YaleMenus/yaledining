@@ -1,4 +1,4 @@
-# tbapy [![PyPI version](https://badge.fury.io/py/yaledining.svg)](https://badge.fury.io/py/yaledining)
+# yaledining [![PyPI version](https://badge.fury.io/py/yaledining.svg)](https://badge.fury.io/py/yaledining)
 
 > Python library for interfacing with the Yale Dining API.
 
