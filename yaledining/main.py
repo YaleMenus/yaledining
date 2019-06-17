@@ -1,4 +1,5 @@
 import requests
+from .models import *
 
 
 class ConnectionError(Exception):
@@ -39,16 +40,16 @@ class YaleDining:
             raise ConnectionError('API request failed.')
 
     def get_locations(self):
-        return self.get('locations.cfm')
+        return [Location(raw, self) for raw in self.get('locations.cfm')]
 
     def get_menus(self, location_id: int):
-        return self.get('menus.cfm', params={'location': location_id})
+        return [Menu(raw, self) for raw in self.get('menus.cfm', params={'location': location_id})]
 
     def get_nutrition(self, item_id: int):
-        return self.get('menuitem-nutrition.cfm', params={'MENUITEMID': item_id})[0]
+        return Nutrition(self.get('menuitem-nutrition.cfm', params={'MENUITEMID': item_id})[0], self)
 
     def get_traits(self, item_id: int):
-        return self.get('menuitem-codes.cfm', params={'MENUITEMID': item_id})[0]
+        return Traits(self.get('menuitem-codes.cfm', params={'MENUITEMID': item_id})[0], self)
 
     def get_ingredients(self, item_id: int):
-        return self.get('menuitem-ingredients.cfm', params={'MENUITEMID': item_id})
+        return [Ingredient(raw, self) for raw in self.get('menuitem-ingredients.cfm', params={'MENUITEMID': item_id})]
