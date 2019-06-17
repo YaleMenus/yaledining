@@ -1,6 +1,6 @@
-import yale_dining
+import yaledining
 
-dining = yale_dining.YaleDining()
+dining = yaledining.YaleDining()
 
 # Test parameters obtained from API documentation.
 print(dining.get_locations())
