@@ -11,7 +11,7 @@ First, install the module:
 pip3 install yaledining
 ```
 
-Then, to use these functions, you must import the `tbapy` module:
+Then, to use these functions, you must import the module:
 
 ```py
 import yaledining
@@ -24,9 +24,6 @@ dining = yaledining.YaleDining()
 ```
 
 This API does not require authentication.
-
-The Blue Alliance's API requires that all applications identify themselves with an auth key when retrieving data. To obtain an auth key, visit TBA's [Account page](https://www.thebluealliance.com/account).
-
 
 ## Retrieval Functions
 - `get_locations()`
