@@ -4,6 +4,14 @@
 
 [API documentation](https://developers.yale.edu/yale-dining)
 
+## Guiding principles
+This API seeks to enable Pythonic code using Yale Dining API data. For this reason, original names and unpleasant styles of data storage and access are often overridden.
+
+For example:
+- Names are put in standardized, Pythonic snake case (eg: `DININGLOCATIONNAME` becomes `dining_location_name`)
+- Some clumsy naming is redone entirely (eg: locations' `ID_LOCATION` field simply is called `id` since the fact that it identifies a `Location` is implicit)
+-
+
 ## Setup
 First, install the module:
 
