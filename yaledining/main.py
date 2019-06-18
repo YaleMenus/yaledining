@@ -27,17 +27,15 @@ class YaleDining:
         }
         custom_params.update(params)
         request = requests.get(self.API_ROOT + endpoint, params=custom_params)
-        if request.ok:
-            data = request.json()
-            # Restructure data into a list of dictionaries for easier manipulation
-            data = [
-                {data['COLUMNS'][index]: entry[index] for index in range(len(entry))}
-                for entry in data['DATA']
-            ]
-            return data
-        else:
-            # TODO: Can we be more helpful?
+        if not request.ok:
             raise ConnectionError('API request failed.')
+        data = request.json()
+        # Restructure data into a list of dictionaries for easier manipulation
+        data = [
+            {data['COLUMNS'][index]: entry[index] for index in range(len(entry))}
+            for entry in data['DATA']
+        ]
+        return data
 
     def locations(self):
         return [Location(raw, self) for raw in self.get('locations.cfm')]
