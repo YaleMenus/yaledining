@@ -6,9 +6,6 @@ class _base_model():
         self.raw = raw
         self.api = api
 
-    def __repr__(self):
-        return '%s(%s)' % (self.__class__.__name__, self.raw)
-
     def parse_datetime(self, raw: str) -> datetime.datetime:
         return datetime.datetime.strptime(raw, '%B, %d %Y %H:%M:%S')
 

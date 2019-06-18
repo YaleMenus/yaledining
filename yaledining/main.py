@@ -52,13 +52,21 @@ class YaleDining:
         if a == b: return True
         return False
 
-    def location(self, id: int = None, name: str = None, lenient_matching: bool = True):
+    def location(self, identifier, lenient_matching: bool = True):
+        """
+        Get a single location by name or ID.
+
+        :param identifier: numerical ID or name of location. If an integer is passed or a string that could be converted to
+                           an integer, it will be assumed to be an ID. Otherwise, a location will be searched for by name.
+        :param lenient_matching: if a name is provided, should close matches be tolerated as well?
+        """
+        if type(identifier) == str and identifier.isdigit():
+            identifier = int(identifier)
         for location in self.locations():
-            if id is not None:
-                # Then Freud was right all along
-                if location.id == id:
+            if type(identifier) == int:
+                if location.id == identifier:
                     return location
-            elif name is not None:
+            else:
                 if location.name == name or lenient_matching and self._lenient_equals(location.name, name):
                     return location
         return None
