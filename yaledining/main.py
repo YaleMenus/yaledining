@@ -38,9 +38,17 @@ class YaleDining:
         return data
 
     def locations(self):
+        """
+        Get all locations available from the dining API.
+        """
         return [Location(raw, self) for raw in self.get('locations.cfm')]
 
     def _lenient_equals(self, a, b):
+        """
+        Perform a series of decompositions on unequal location names to see if they're close enough.
+        :param a: first name.
+        :param b: second name.
+        """
         # These two comparisons should be split up because of locations whose names start with "Café"
         a = unidecode(a.lower())
         b = unidecode(b.lower())
@@ -53,7 +61,6 @@ class YaleDining:
     def location(self, identifier, lenient_matching: bool = True):
         """
         Get a single location by name or ID.
-
         :param identifier: numerical ID or name of location. If an integer is passed or a string that could be converted to
                            an integer, it will be assumed to be an ID. Otherwise, a location will be searched for by name.
         :param lenient_matching: if a name is provided, should close matches be tolerated as well?
@@ -65,18 +72,34 @@ class YaleDining:
                 if location.id == identifier:
                     return location
             else:
-                if location.name == name or lenient_matching and self._lenient_equals(location.name, name):
+                if location.name == identifier or lenient_matching and self._lenient_equals(location.name, identifier):
                     return location
         return None
 
     def menus(self, location_id: int):
+        """
+        Get all currently list menu items for a specified location.
+        :param location_id: ID of location of which to get menus.
+        """
         return [Menu(raw, self) for raw in self.get('menus.cfm', params={'location': location_id})]
 
     def nutrition(self, item_id: int):
+        """
+        Get nutrition data for a menu item.
+        :param item_id: ID of item to get data on.
+        """
         return Nutrition(self.get('menuitem-nutrition.cfm', params={'MENUITEMID': item_id})[0], self)
 
     def traits(self, item_id: int):
+        """
+        Get traits data of a menu item, for example whether it's vegetarian, whether it contains pork, nuts, etc.
+        :param item_id: ID of item to get data on.
+        """
         return Traits(self.get('menuitem-codes.cfm', params={'MENUITEMID': item_id})[0], self)
 
     def ingredients(self, item_id: int):
+        """
+        Get a list of ingredients of a menu item.
+        :param item_id: ID of item to get data on.
+        """
         return [Ingredient(raw, self) for raw in self.get('menuitem-ingredients.cfm', params={'MENUITEMID': item_id})]
