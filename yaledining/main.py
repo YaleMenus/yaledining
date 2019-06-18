@@ -44,8 +44,8 @@ class YaleDining:
         return [Location(raw, self) for raw in self.get('locations.cfm')]
 
     def _lenient_equals(self, a, b):
-        a = normalize(a.lower())
-        b = normalize(b.lower())
+        a = normalize('NFD', a.lower())
+        b = normalize('NFD', b.lower())
         if a == b: return True
         a = a.split()[0]
         b = b.split()[0]
@@ -59,7 +59,7 @@ class YaleDining:
                 if location.id == id:
                     return location
             elif name is not None:
-                if location.name == name or lenient_matching and self._lenient_equals(a, b):
+                if location.name == name or lenient_matching and self._lenient_equals(location.name, name):
                     return location
         return None
 
