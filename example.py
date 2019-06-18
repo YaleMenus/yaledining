@@ -4,7 +4,10 @@ dining = yaledining.YaleDining()
 
 # Test parameters obtained from API documentation.
 location = dining.get_locations()[0]
-print('%s is located at %s and its phone number is %s.' % (location.name, location.address, location.phone))
+print('%s is located at %s (latitude %f) and its phone number is %s.' % (location.name,
+                                                                         location.address,
+                                                                         location.latitude,
+                                                                         location.phone))
 print('It is ' + ('open' if location.open else 'closed'))
 print('The first manager\'s email is ' + location.managers[0].email)
 
