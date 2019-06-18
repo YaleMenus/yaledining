@@ -15,12 +15,11 @@ class YaleDining:
     def __init__(self):
         pass
 
-    def get(self, endpoint: str, make_list: bool = True, params: dict = {}):
+    def get(self, endpoint: str, params: dict = {}):
         """
         Make a GET request to the dining API.
 
         :param endpoint: path to resource desired.
-        :param make_list: should data be restructured into a list of dictionaries for easier manipulation?
         :param params: dictionary of custom params to add to request.
         """
         custom_params = {
@@ -30,11 +29,11 @@ class YaleDining:
         request = requests.get(self.API_ROOT + endpoint, params=custom_params)
         if request.ok:
             data = request.json()
-            if make_list:
-                data = [
-                    {data['COLUMNS'][index]: entry[index] for index in range(len(entry))}
-                    for entry in data['DATA']
-                ]
+            # Restructure data into a list of dictionaries for easier manipulation
+            data = [
+                {data['COLUMNS'][index]: entry[index] for index in range(len(entry))}
+                for entry in data['DATA']
+            ]
             return data
         else:
             # TODO: Can we be more helpful?
@@ -44,6 +43,7 @@ class YaleDining:
         return [Location(raw, self) for raw in self.get('locations.cfm')]
 
     def _lenient_equals(self, a, b):
+        # These two comparisons should be split up because of locations whose names start with "Café"
         a = unidecode(a.lower())
         b = unidecode(b.lower())
         if a == b: return True
