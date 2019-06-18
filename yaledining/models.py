@@ -92,6 +92,18 @@ class Menu(_base_model):
         self.is_default_meal = bool(raw['ISDEFAULTMEAL'])
         self.is_menu = bool(raw['ISMENU'])
 
+    @property
+    def nutrition(self):
+        return self.api.nutrition(self.item_id)
+
+    @property
+    def traits(self):
+        return self.api.traits(self.item_id)
+
+    @property
+    def ingredients(self):
+        return self.api.ingredients(self.item_id)
+
 
 class Nutrition(_base_model):
     def __init__(self, raw: dict, api):
