@@ -1,4 +1,5 @@
 import requests
+from unicodedata import normalize
 from .models import *
 
 
@@ -41,6 +42,22 @@ class YaleDining:
 
     def locations(self):
         return [Location(raw, self) for raw in self.get('locations.cfm')]
+
+    def _lenient_equals(self, a, b):
+        a = normalize(a.lower())
+        b = normalize(b.lower())
+        if a == b: return True
+
+    def location(self, id: int = None, name: str = None, lenient_matching: bool = True):
+        for location in self.locations():
+            if id is not None:
+                # Then Freud was right all along
+                if location.id == id:
+                    return location
+            elif name is not None:
+                if location.name == name:
+                    return location
+        return None
 
     def menus(self, location_id: int):
         return [Menu(raw, self) for raw in self.get('menus.cfm', params={'location': location_id})]
