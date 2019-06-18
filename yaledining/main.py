@@ -81,7 +81,7 @@ class YaleDining:
         Get all currently list menu items for a specified location.
         :param location_id: ID of location of which to get menus.
         """
-        return [Menu(raw, self) for raw in self.get('menus.cfm', params={'location': location_id})]
+        return compile_menus(self.get('menus.cfm', params={'location': location_id}), self)
 
     def nutrition(self, item_id: int):
         """

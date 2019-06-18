@@ -60,7 +60,7 @@ class Location(_base_model):
 
 
 class Menu(_base_model):
-    def __init__(self, raw: dict, api):
+    def __init__(self, raw: dict, api, items: list):
         super().__init__(raw, api)
         self.item = raw['MENUITEM']
         self.item_id = int(float(raw['MENUITEMID']))
@@ -89,6 +89,12 @@ class Menu(_base_model):
         self.is_default_meal = bool(raw['ISDEFAULTMEAL'])
         self.is_menu = bool(raw['ISMENU'])
 
+
+class Item(_base_model):
+    def __init__(self, raw: dict, api):
+        super().__init__(raw, api)
+
+
     @property
     def nutrition(self):
         return self.api.nutrition(self.item_id)
@@ -101,6 +107,18 @@ class Menu(_base_model):
     def ingredients(self):
         return self.api.ingredients(self.item_id)
 
+
+def compile_menus(raw: dict, api):
+    # Dictionary mapping date strings to dictionaries mapping meal names to lists of items
+    days = {}
+    for raw_item in raw:
+        item = Item(raw_item, api)
+        if days.get(item.date) is None:
+            days[item.date] = {}
+        if days[item.date].get(item.meal_code) is None:
+            days[item.date][item.meal_code] = []
+        days[item.date][item.meal_code].append(item)
+    print(days)
 
 class Nutrition(_base_model):
     def __init__(self, raw: dict, api):
