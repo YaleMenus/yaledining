@@ -47,6 +47,10 @@ class YaleDining:
         a = normalize(a.lower())
         b = normalize(b.lower())
         if a == b: return True
+        a = a.split()[0]
+        b = b.split()[0]
+        if a == b: return True
+        return False
 
     def location(self, id: int = None, name: str = None, lenient_matching: bool = True):
         for location in self.locations():
@@ -55,7 +59,7 @@ class YaleDining:
                 if location.id == id:
                     return location
             elif name is not None:
-                if location.name == name:
+                if location.name == name or lenient_matching and self._lenient_equals(a, b):
                     return location
         return None
 
