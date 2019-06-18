@@ -9,6 +9,12 @@ class _base_model():
     def __repr__(self):
         return '%s(%s)' % (self.__class__.__name__, self.raw)
 
+    def parse_datetime(self, raw: str) -> datetime.datetime:
+        return datetime.strptime(raw, '%B, %e %Y %H:%M:%S')
+
+    def parse_time(self, raw: str):
+        return datetime.strptime(raw, '%H:%M %p').time()
+
 
 def _make_model(class_name):
     return type(class_name, (_base_model,), {})
@@ -75,6 +81,8 @@ class Menu(_base_model):
         # Times formatted like:
         # 08:00 AM
         self.raw_open_time = raw['MEALOPENS']
-        self.open_time = datetime.strptime(self.raw_open_time, '%H:%M %p').time()
+        self.open_time = self.parse_time(self.raw_open_time)
         self.raw_close_time = raw['MEALCLOSES']
-        self.close_time = datetime.strptime(self.raw_close_time, '%H:%M %p').time()
+        self.close_time = self.parse_time(self.raw_close_time)
+        self.is_default_meal = bool(raw['ISDEFAULTMEAL'])
+        self.is_menu = bool(raw['ISMENU'])
