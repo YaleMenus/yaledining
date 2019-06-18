@@ -18,7 +18,9 @@ for menu in menus:
 # Or you can pass a menu item ID directly
 print(dining.traits(5908402))
 
-# You can also search by name
+# You can also search for locations by ID or name
+print(dining.location(1).name)
+print(dining.location(id=1).name)
 print(dining.location(name='Slifka Center').open)
 # By default, similar results will be matched as well
 print(dining.location(name='wést').name)  # "West Campus"
