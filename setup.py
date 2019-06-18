@@ -10,4 +10,4 @@ setup(name='yaledining',
       author_email='me@erikboesen.com',
       license='GPL',
       packages=['yaledining'],
-      install_requires=['requests'])
+      install_requires=['requests', 'unidecode'])

@@ -21,4 +21,4 @@ print(dining.traits(5908402))
 # You can also search by name
 print(dining.location(name='Slifka Center').open)
 # By default, similar results will be matched as well
-print(dining.location(name='west').name)
+print(dining.location(name='wést').name)  # "West Campus"

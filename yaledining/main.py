@@ -1,5 +1,5 @@
 import requests
-from unicodedata import normalize
+from unidecode import unidecode
 from .models import *
 
 
@@ -44,8 +44,8 @@ class YaleDining:
         return [Location(raw, self) for raw in self.get('locations.cfm')]
 
     def _lenient_equals(self, a, b):
-        a = normalize('NFD', a.lower())
-        b = normalize('NFD', b.lower())
+        a = unidecode(a.lower())
+        b = unidecode(b.lower())
         if a == b: return True
         a = a.split()[0]
         b = b.split()[0]
