@@ -135,3 +135,10 @@ class Traits(_base_model):
         self.gluten_free = bool(raw['GLUTENFREE'])
         self.facility_warning = raw['FACILITYWARNING'])
 
+
+class Ingredient(_base_model):
+    def __init__(self, raw: dict, api):
+        super().__init__(raw, api)
+        self.item_id = int(raw['RECIPE NUMBER'])
+
+        self.name = raw['INGREDIENT']
