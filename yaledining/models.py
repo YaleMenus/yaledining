@@ -109,7 +109,7 @@ class Nutrition(_base_model):
         self.dietary_fiber = raw['DIETARY FIBER']
         self.vitamin_c = raw['VITAMIN C']
         self.vitamin_a = raw['VITAMIN A']
-        self.iron = raw['iron']
+        self.iron = raw['IRON']
 
 
 class Traits(_base_model):
@@ -133,7 +133,7 @@ class Traits(_base_model):
         self.gluten = bool(raw['GLUTEN'])
         self.vegetarian = bool(raw['VEGETARIAN'])
         self.gluten_free = bool(raw['GLUTENFREE'])
-        self.facility_warning = raw['FACILITYWARNING'])
+        self.facility_warning = raw['FACILITYWARNING']
 
 
 class Ingredient(_base_model):
