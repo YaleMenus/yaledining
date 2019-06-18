@@ -1,3 +1,6 @@
+import datetime
+
+
 class _base_model():
     def __init__(self, raw: dict, api):
         self.raw = raw
@@ -33,7 +36,7 @@ class Location(_base_model):
         self.capacity = raw['CAPACITY']
         self.percent_capacity = 10 * self.capacity if self.capacity is not None else None
         self.geolocation = raw['GEOLOCATION']
-        self.latitude, self.longitude = raw['GEOLOCATION'].split(',')
+        self.latitude, self.longitude = tuple([float(coordinate) for coordinate in raw['GEOLOCATION'].split(',')])
         self.closed = bool(raw['ISCLOSED'])
         self.open = not self.closed
         self.address = raw['ADDRESS']
@@ -47,3 +50,31 @@ class Location(_base_model):
             if name is not None and email is not None:
                 managers.append(Manager(name, email))
         self.managers = tuple(managers)
+
+
+class Menu(_base_model):
+    def __init__(self, raw: dict, api):
+        super().__init__(raw, api)
+        self.location_id = int(raw['ID_LOCATION'])
+        self.location_code = int(raw['LOCATIONCODE'])
+        self.location_name = raw['LOCATION']
+        self.meal_name = raw['MEALNAME']
+        self.meal_code = int(raw['MEALCODE'])
+        # Dates are formatted like:
+        # June, 18 2019 00:00:00
+        # TODO: should we provide the string format as well?
+        self.raw_date = raw['MENUDATE']
+        self.date = datetime.strptime(self.raw_date, '%B, %e %Y %H:%M:%S')
+        self.id = int(raw['ID'])
+        self.course = raw['COURSE']
+        self.course_code = int(float(raw['COURSECODE']))
+        self.item = raw['MENUITEM']
+        self.item_id = int(float(raw['MENUITEMID']))
+        # TODO: What is this?
+        self.is_par = bool(raw['ISPAR'])
+        # Times formatted like:
+        # 08:00 AM
+        self.raw_open_time = raw['MEALOPENS']
+        self.open_time = datetime.strptime(self.raw_open_time, '%H:%M %p').time()
+        self.raw_close_time = raw['MEALCLOSES']
+        self.close_time = datetime.strptime(self.raw_close_time, '%H:%M %p').time()
