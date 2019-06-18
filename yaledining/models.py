@@ -61,6 +61,9 @@ class Location(_base_model):
 class Menu(_base_model):
     def __init__(self, raw: dict, api):
         super().__init__(raw, api)
+        self.item = raw['MENUITEM']
+        self.item_id = int(float(raw['MENUITEMID']))
+
         self.location_id = int(raw['ID_LOCATION'])
         self.location_code = int(raw['LOCATIONCODE'])
         self.location_name = raw['LOCATION']
@@ -74,8 +77,6 @@ class Menu(_base_model):
         self.id = int(raw['ID'])
         self.course = raw['COURSE']
         self.course_code = int(float(raw['COURSECODE']))
-        self.item = raw['MENUITEM']
-        self.item_id = int(float(raw['MENUITEMID']))
         # TODO: What is this?
         self.is_par = bool(raw['ISPAR'])
         # Times formatted like:
@@ -91,8 +92,10 @@ class Menu(_base_model):
 class Nutrition(_base_model):
     def __init__(self, raw: dict, api):
         super().__init__(raw, api)
+        # RECP_NAME for this one is the same thing as a menu item ID so just correct the naming
+        self.item = raw['RECP_NAME']
         self.item_id = int(raw['MENUITEMID'])
-        self.recipe_name = raw['RECP_NAME']
+
         # TODO: This is returned in the format '1 srv spn (12 bns)'. I feel like we could make this more useful.
         # Also, yes, that is a space.
         self.serving_size = raw['SERVING SIZE']
@@ -109,4 +112,26 @@ class Nutrition(_base_model):
         self.iron = raw['iron']
 
 
+class Traits(_base_model):
+    def __init__(self, raw: dict, api):
+        super().__init__(raw, api)
+        self.item = raw['MENUITEM']
+        self.item_id = int(raw['MENUITEMID'])
+
+        self.alcohol = bool(raw['ALCOHOL'])
+        self.nuts = bool(raw['NUTS'])
+        self.shellfish = bool(raw['SHELLFISH'])
+        self.peanut = bool(raw['PEANUT'])
+        self.dairy = bool(raw['DAIRY'])
+        self.eggs = bool(raw['EGGS'])
+        self.vegan = bool(raw['VEGAN'])
+        self.pork = bool(raw['PORK'])
+        # TODO: reevaluate naming?
+        self.seafood = bool(raw['FISHSEAFOOD'])
+        self.soy = bool(raw['SOY'])
+        self.wheat = bool(raw['WHEAT'])
+        self.gluten = bool(raw['GLUTEN'])
+        self.vegetarian = bool(raw['VEGETARIAN'])
+        self.gluten_free = bool(raw['GLUTENFREE'])
+        self.facility_warning = raw['FACILITYWARNING'])
 
