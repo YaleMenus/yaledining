@@ -13,6 +13,7 @@ For example:
 - More intuitive types are used, for example booleans over 0/1 integers
 - `Location`'s `GEOLOCATION` property, while still accessible through `geolocation`, can be accessed through `latitude` and `longitude` propeties as well
 - `Location` managers can be accessed as their own objects through the tuple `Location.managers`, with easier `name` and `email` properties
+- `Menu` date and time fields use `datetime` and `time`
 
 If you do **NOT** desire to use these enhancements, you may get the `raw` property of an object this wrapper returns:
 ```py

@@ -86,3 +86,27 @@ class Menu(_base_model):
         self.close_time = self.parse_time(self.raw_close_time)
         self.is_default_meal = bool(raw['ISDEFAULTMEAL'])
         self.is_menu = bool(raw['ISMENU'])
+
+
+class Nutrition(_base_model):
+    def __init__(self, raw: dict, api):
+        super().__init__(raw, api)
+        self.item_id = int(raw['MENUITEMID'])
+        self.recipe_name = raw['RECP_NAME']
+        # TODO: This is returned in the format '1 srv spn (12 bns)'. I feel like we could make this more useful.
+        # Also, yes, that is a space.
+        self.serving_size = raw['SERVING SIZE']
+        self.calories = raw['CALORIES']
+        self.protein = raw['PROTEIN']
+        self.fat = raw['FAT']
+        self.saturated_fat = raw['SATURATED FAT']
+        self.cholesterol = raw['CHOLESTEROL']
+        self.carbohydrates = raw['CARBOHYDRATES']
+        self.sugar = raw['SUGAR']
+        self.dietary_fiber = raw['DIETARY FIBER']
+        self.vitamin_c = raw['VITAMIN C']
+        self.vitamin_a = raw['VITAMIN A']
+        self.iron = raw['iron']
+
+
+
