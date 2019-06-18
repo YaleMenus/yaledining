@@ -57,6 +57,10 @@ class Location(_base_model):
                 managers.append(Manager(name, email))
         self.managers = tuple(managers)
 
+    @property
+    def menus(self):
+        return self.api.menus(self.id)
+
 
 class Menu(_base_model):
     def __init__(self, raw: dict, api):
