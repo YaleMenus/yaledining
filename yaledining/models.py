@@ -10,10 +10,10 @@ class _base_model():
         return '%s(%s)' % (self.__class__.__name__, self.raw)
 
     def parse_datetime(self, raw: str) -> datetime.datetime:
-        return datetime.strptime(raw, '%B, %e %Y %H:%M:%S')
+        return datetime.datetime.strptime(raw, '%B, %d %Y %H:%M:%S')
 
     def parse_time(self, raw: str):
-        return datetime.strptime(raw, '%H:%M %p').time()
+        return datetime.datetime.strptime(raw, '%H:%M %p').time()
 
 
 def _make_model(class_name):
@@ -77,7 +77,7 @@ class Menu(_base_model):
         # June, 18 2019 00:00:00
         # TODO: should we provide the string format as well?
         self.raw_date = raw['MENUDATE']
-        self.date = datetime.strptime(self.raw_date, '%B, %e %Y %H:%M:%S')
+        self.date = self.parse_datetime(self.raw_date)
         self.id = int(raw['ID'])
         self.course = raw['COURSE']
         self.course_code = int(float(raw['COURSECODE']))
