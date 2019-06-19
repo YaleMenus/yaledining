@@ -55,14 +55,14 @@ class Location(_base_model):
         self.managers = tuple(managers)
 
     @property
-    def menus(self):
-        return self.api.menus(self.id)
+    def meals(self):
+        return self.api.meals(self.id)
 
 
 class Meal(_base_model):
     def __init__(self, raw: dict, api):
         super().__init__(raw, api)
-        self.items = items
+        self.items = []
 
         self.location_id = int(raw['ID_LOCATION'])
         self.location_code = int(raw['LOCATIONCODE'])

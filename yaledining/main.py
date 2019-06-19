@@ -76,9 +76,11 @@ class YaleDining:
                     return location
         return None
 
-    def menus(self, location_id: int):
+    def meals(self, location_id: int):
         """
-        Get all currently list menu items for a specified location.
+        Get all currently listed meals items for a specified location
+        The API stores meals as a list of "menus" which each have data on one item and repeated data on a meal.
+        To increase intuitiveness, we separate meal details into a Meal object, which has many Items.
         :param location_id: ID of location of which to get menus.
         """
         raw = self.get('menus.cfm', params={'location': location_id})
@@ -97,7 +99,9 @@ class YaleDining:
         meals = []
         for day in days:
             for meal in days[day]:
-                meals.append(meal)
+                meals.append(days[day][meal])
+        print('MEALS:')
+        print(meals)
         return meals
 
     def nutrition(self, item_id: int):

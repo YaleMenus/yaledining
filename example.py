@@ -1,30 +1,30 @@
 import yaledining
 
-dining = yaledining.YaleDining()
+# You can call this anything
+api = yaledining.YaleDining()
 
 # Test parameters obtained from API documentation.
-location = dining.locations()[0]
+locations = api.locations()
+print('There are %d locations, the name of one of them is %s' % (len(locations), locations[5].name))
+location = api.location('Pierson')
 print('%s is located at %s (latitude %f) and its phone number is %s.' % (location.name,
                                                                          location.address,
                                                                          location.latitude,
                                                                          location.phone))
 print('It is ' + ('open' if location.open else 'closed'))
 print('The first manager\'s email is ' + location.managers[0].email)
-menus = location.menus
-"""
-print('It has %d menus currently posted.' % len(menus))
-for menu in menus:
-    print('Is this menu vegetarian? ' + 'Yes' if menu.traits.vegetarian else 'No')
-"""
+meals = location.meals
+print('It has %d meals currently posted.' % len(meals))
+for meal in meals:
+    print(meal.name + ':')
+    for item in meal.items:
+        print(item.name)
 
 # Or you can pass a menu item ID directly
-print(dining.traits(5908402))
+print(api.traits(5908402))
 
 # You can also search for locations by ID or name
-print(dining.location(1).name)
-print(dining.location('Slifka Center').open)
+print(api.location(1).name)
+print(api.location('Slifka Center').open)
 # By default, similar results will be matched as well
-print(dining.location('wést').name)  # "West Campus"
-
-location = dining.location('Pierson')
-location.menus
+print(api.location('wést').name)  # "West Campus"
