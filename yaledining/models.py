@@ -64,6 +64,10 @@ class Meal(_base_model):
         super().__init__(raw, api)
         self.items = items
 
+        self.location_id = int(raw['ID_LOCATION'])
+        self.location_code = int(raw['LOCATIONCODE'])
+        self.location_name = raw['LOCATION']
+
         self.name = raw['MEALNAME']
         self.code = int(raw['MEALCODE'])
         # Dates are formatted like:
@@ -72,10 +76,8 @@ class Meal(_base_model):
         self.raw_date = raw['MENUDATE']
         self.date = self.parse_datetime(self.raw_date)
         self.id = int(raw['ID'])
-        self.course = raw['COURSE']
-        self.course_code = int(float(raw['COURSECODE']))
         # TODO: What is this?
-        self.is_par = bool(raw['ISPAR'])
+        #self.is_par = bool(raw['ISPAR'])
         # Times formatted like:
         # 08:00 AM
         self.raw_open_time = raw['MEALOPENS']
@@ -89,7 +91,10 @@ class Meal(_base_model):
 class Item(_base_model):
     def __init__(self, raw: dict, api):
         super().__init__(raw, api)
-
+        self.item = raw['MENUITEM']
+        self.item_id = int(float(raw['MENUITEMID']))
+        self.course = raw['COURSE']
+        self.course_code = int(float(raw['COURSECODE']))
 
     @property
     def nutrition(self):
