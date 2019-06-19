@@ -18,8 +18,8 @@ For example:
 
 If you do **NOT** desire to use these enhancements, you may get the `raw` property of an object this wrapper returns:
 ```py
-location = api.get_locations()[0]  # -> returns Location
-location.raw  # -> {'ID_LOCATION': '1', ... }
+location = api.location('Branford')  # -> returns Location object
+location.raw  # -> {'ID_LOCATION': '2', ... }
 ```
 Doing so will get a dictionary of an object in similar format to how it's normally returned.
 
