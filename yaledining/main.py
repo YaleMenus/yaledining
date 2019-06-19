@@ -100,8 +100,6 @@ class YaleDining:
         for day in days:
             for meal in days[day]:
                 meals.append(days[day][meal])
-        print('MEALS:')
-        print(meals)
         return meals
 
     def nutrition(self, item_id: int):

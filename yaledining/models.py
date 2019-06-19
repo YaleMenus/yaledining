@@ -91,22 +91,22 @@ class Meal(_base_model):
 class Item(_base_model):
     def __init__(self, raw: dict, api):
         super().__init__(raw, api)
-        self.item = raw['MENUITEM']
-        self.item_id = int(float(raw['MENUITEMID']))
+        self.name = raw['MENUITEM']
+        self.id = int(float(raw['MENUITEMID']))
         self.course = raw['COURSE']
         self.course_code = int(float(raw['COURSECODE']))
 
     @property
     def nutrition(self):
-        return self.api.nutrition(self.item_id)
+        return self.api.nutrition(self.id)
 
     @property
     def traits(self):
-        return self.api.traits(self.item_id)
+        return self.api.traits(self.id)
 
     @property
     def ingredients(self):
-        return self.api.ingredients(self.item_id)
+        return self.api.ingredients(self.id)
 
 
 class Nutrition(_base_model):

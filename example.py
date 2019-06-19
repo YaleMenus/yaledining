@@ -18,7 +18,7 @@ print('It has %d meals currently posted.' % len(meals))
 for meal in meals:
     print(meal.name + ':')
     for item in meal.items:
-        print(item.name)
+        print('%s %s vegetarian' % (item.name, 'is' if item.traits.vegetarian else 'isn\'t'))
 
 # Or you can pass a menu item ID directly
 print(api.traits(5908402))
