@@ -81,7 +81,24 @@ class YaleDining:
         Get all currently list menu items for a specified location.
         :param location_id: ID of location of which to get menus.
         """
-        return compile_menus(self.get('menus.cfm', params={'location': location_id}), self)
+        raw = self.get('menus.cfm', params={'location': location_id})
+
+        # Dictionary mapping date strings to dictionaries mapping meal names to lists of items
+        days = {}
+        for raw_item in raw:
+            date = raw_item['MENUDATE']
+            meal_code = raw_item['MEALCODE']
+            item = Item(raw_item, self)
+            if days.get(date) is None:
+                days[date] = {}
+            if days[date].get(meal_code) is None:
+                days[date][meal_code] = Meal(raw_item, self)
+            days[date][meal_code].items.append(item)
+        meals = []
+        for day in days:
+            for meal in days[day]:
+                meals.append(meal)
+        return meals
 
     def nutrition(self, item_id: int):
         """

@@ -60,7 +60,7 @@ class Location(_base_model):
 
 
 class Meal(_base_model):
-    def __init__(self, raw: dict, api, items: list):
+    def __init__(self, raw: dict, api):
         super().__init__(raw, api)
         self.items = items
 
@@ -107,25 +107,6 @@ class Item(_base_model):
     @property
     def ingredients(self):
         return self.api.ingredients(self.item_id)
-
-
-def compile_menus(raw: dict, api):
-    # Dictionary mapping date strings to dictionaries mapping meal names to lists of items
-    days = {}
-    for raw_item in raw:
-        date = raw_item['MENUDATE']
-        meal_code = raw_item['MEALCODE']
-        item = Item(raw_item, api)
-        if days.get(date) is None:
-            days[date] = {}
-        if days[date].get(meal_code) is None:
-            days[date][meal_code] = []
-        days[date][meal_code].append(item)
-    meals = []
-    for day in days:
-        for items in day:
-            meals.append(Meal(raw, api, items))
-    return meals
 
 
 class Nutrition(_base_model):
