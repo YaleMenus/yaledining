@@ -59,17 +59,13 @@ class Location(_base_model):
         return self.api.menus(self.id)
 
 
-class Menu(_base_model):
+class Meal(_base_model):
     def __init__(self, raw: dict, api, items: list):
         super().__init__(raw, api)
-        self.item = raw['MENUITEM']
-        self.item_id = int(float(raw['MENUITEMID']))
+        self.items = items
 
-        self.location_id = int(raw['ID_LOCATION'])
-        self.location_code = int(raw['LOCATIONCODE'])
-        self.location_name = raw['LOCATION']
-        self.meal_name = raw['MEALNAME']
-        self.meal_code = int(raw['MEALCODE'])
+        self.name = raw['MEALNAME']
+        self.code = int(raw['MEALCODE'])
         # Dates are formatted like:
         # June, 18 2019 00:00:00
         # TODO: should we provide the string format as well?
@@ -112,13 +108,20 @@ def compile_menus(raw: dict, api):
     # Dictionary mapping date strings to dictionaries mapping meal names to lists of items
     days = {}
     for raw_item in raw:
+        date = raw_item['MENUDATE']
+        meal_code = raw_item['MEALCODE']
         item = Item(raw_item, api)
-        if days.get(item.date) is None:
-            days[item.date] = {}
-        if days[item.date].get(item.meal_code) is None:
-            days[item.date][item.meal_code] = []
-        days[item.date][item.meal_code].append(item)
-    print(days)
+        if days.get(date) is None:
+            days[date] = {}
+        if days[date].get(meal_code) is None:
+            days[date][meal_code] = []
+        days[date][meal_code].append(item)
+    meals = []
+    for day in days:
+        for items in day:
+            meals.append(Meal(raw, api, items))
+    return meals
+
 
 class Nutrition(_base_model):
     def __init__(self, raw: dict, api):
