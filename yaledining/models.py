@@ -98,14 +98,23 @@ class Item(_base_model):
 
     @property
     def nutrition(self):
+        """
+        Get nutrition information for the current item.
+        """
         return self.api.nutrition(self.id)
 
     @property
     def traits(self):
+        """
+        Get traits of the current item.
+        """
         return self.api.traits(self.id)
 
     @property
     def ingredients(self):
+        """
+        Get ingredients of the current item.
+        """
         return self.api.ingredients(self.id)
 
 

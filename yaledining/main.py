@@ -91,9 +91,9 @@ class YaleDining:
             date = raw_item['MENUDATE']
             meal_code = raw_item['MEALCODE']
             item = Item(raw_item, self)
-            if days.get(date) is None:
+            if date not in days:
                 days[date] = {}
-            if days[date].get(meal_code) is None:
+            if meal_code not in days[date]:
                 days[date][meal_code] = Meal(raw_item, self)
             days[date][meal_code].items.append(item)
         meals = []
