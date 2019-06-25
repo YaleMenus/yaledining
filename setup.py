@@ -3,7 +3,7 @@
 from setuptools import setup
 
 setup(name='yaledining',
-      version='0.1.0',
+      version='0.1.1',
       description='Library for abstractly fetching data from the Yale Dining API.',
       url='https://github.com/ErikBoesen/yaledining',
       author='Erik Boesen',
