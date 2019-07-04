@@ -46,11 +46,16 @@ api = yaledining.YaleDining()
 This API does not require authentication.
 
 ## Retrieval Functions
-- `get_locations()`
-- `get_menus(location_id)`
-- `get_nutrition(item_id)`
-- `get_traits(item_id)`
-- `get_ingredients(item_id)`
+- `locations()`: get a list of all `Location` objects on campus
+- `location(identifier, lenient_matching=True)`: get a single `Location` object represented by either a numerical location ID or a name in `str` format. `lenient_matching` can be specified to match similarly-named locations.
+- `meals(location_id)`: get a list of `Meal` objects representing all current and upcoming meals listed for the `location_id` specified. It is likely preferable to use the `Location.meals` method if you already have a `Location` object; this will abstract away ID manipulation. Note that you must access the `items` property to get data on specific items. While the standard API merges repeated meal data with individual menu items and calls its model "menus," this wrapper separates data into `Meal` and `Item` objects. This means that there is no direct API request to get items, but you can simply use `meals(location_id).items` to the same effect.
+- `nutrition(item_id)`: get nutrition data for a menu item. Using `Item.nutrition` is preferred if you already have an `Item` object to avoid ID manipulation.
+- `traits(item_id)`: get traits data for a menu item, predominantly boolean values stating whether the item conforms to various dietary restrictions, contains allergens, etc.). Using `Item.traits` is preferred if you already have an `Item` object.
+- `ingredients(item_id)`: get a list of ingredients for a menu item, each in `str` format. Using `Item.ingredients` is preferred if you already have an `Item` object.
+
+## Models
+* `Location`
+    * TODO
 
 See `example.py` for several usage examples.
 
