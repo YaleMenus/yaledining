@@ -54,8 +54,43 @@ This API does not require authentication.
 - `ingredients(item_id)`: get a list of ingredients for a menu item, each in `str` format. Using `Item.ingredients` is preferred if you already have an `Item` object.
 
 ## Models
-* `Location`
-    * TODO
+* `Location`: a dining location.
+    * `id`
+    * `location_code`
+    * `name`
+    * `type`
+    * `capacity`
+    * `percent_capacity`
+    * `geolocation`
+    * `latitude`
+    * `longitude`
+    * `closed`
+    * `open`
+    * `address`
+    * `phone`
+    * `managers`: tuple of `Manager`s.
+    * `meals`: shortcut to get `Meal`s from the current location.
+* `Manager`: a manager for a location.
+    * `name`
+    * `email`
+* `Meal`: a single meal.
+    * `id`
+    * `items`: a list of `Item`s being served in this meal.
+    * `location_id`
+    * `location_code`
+    * `location_name`
+    * `name`
+    * `code`
+    * `raw_date`: string-format date formatted like "June, 18 2019 00:00:00". (Time is always `00:00:00`, actual time can be found in (`raw)`)`open_time`/`close_time` properties
+    * `date`: processed `datetime.date` object for ease of manipulation.
+    * `raw_open_time`: time of day when meal begins, formatted like `08:00 AM`.
+    * `open_time`: `datetime.time` representation of the opening time.
+    * `raw_close_time`: see `raw_open_time`
+    * `close_time`: see `open_time`
+    * `is_default_meal`
+    * `is_menu`
+* `Item`: a single menu item.
+    * `
 
 See `example.py` for several usage examples.
 

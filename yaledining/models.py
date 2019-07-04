@@ -62,6 +62,7 @@ class Location(_base_model):
 class Meal(_base_model):
     def __init__(self, raw: dict, api):
         super().__init__(raw, api)
+        self.id = int(raw['ID'])
         self.items = []
 
         self.location_id = int(raw['ID_LOCATION'])
@@ -75,7 +76,6 @@ class Meal(_base_model):
         # TODO: should we provide the string format as well?
         self.raw_date = raw['MENUDATE']
         self.date = self.parse_datetime(self.raw_date)
-        self.id = int(raw['ID'])
         # TODO: What is this?
         #self.is_par = bool(raw['ISPAR'])
         # Times formatted like:
