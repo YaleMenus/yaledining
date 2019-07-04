@@ -6,8 +6,8 @@ class _base_model():
         self.raw = raw
         self.api = api
 
-    def parse_datetime(self, raw: str) -> datetime.datetime:
-        return datetime.datetime.strptime(raw, '%B, %d %Y %H:%M:%S')
+    def parse_date(self, raw: str) -> datetime.datetime:
+        return datetime.datetime.strptime(raw, '%B, %d %Y %H:%M:%S').date()
 
     def parse_time(self, raw: str):
         return datetime.datetime.strptime(raw, '%H:%M %p').time()
@@ -75,7 +75,7 @@ class Meal(_base_model):
         # June, 18 2019 00:00:00
         # TODO: should we provide the string format as well?
         self.raw_date = raw['MENUDATE']
-        self.date = self.parse_datetime(self.raw_date)
+        self.date = self.parse_date(self.raw_date)
         # TODO: What is this?
         #self.is_par = bool(raw['ISPAR'])
         # Times formatted like:
