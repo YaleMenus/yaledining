@@ -120,5 +120,6 @@ class YaleDining:
         """
         Get a list of ingredients of a menu item.
         :param item_id: ID of item to get data on.
+        :return: list of string-format ingredient names, in descending order of prevalence.
         """
-        return [Ingredient(raw, self) for raw in self.get('menuitem-ingredients.cfm', params={'MENUITEMID': item_id})]
+        return [raw['INGREDIENT'] for raw in self.get('menuitem-ingredients.cfm', params={'MENUITEMID': item_id})]
