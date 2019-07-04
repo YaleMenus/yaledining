@@ -90,7 +90,47 @@ This API does not require authentication.
     * `is_default_meal`
     * `is_menu`
 * `Item`: a single menu item.
-    * `
+    * `id`
+    * `name`
+    * `course`
+    * `course_code`
+    * `nutrition`: shortcut to get `Nutrition` for the item.
+    * `traits`: shortcut to get `Traits` for the item.
+    * `ingredients`: shortcut to get list of ingredients for the item.
+* `Nutrition`: index of nutrition facts for an `Item`.
+    * `item`
+    * `item_id`
+    * `serving_size`
+    * `calories`
+    * `protein`
+    * `fat`
+    * `saturated_fat`
+    * `cholesterol`
+    * `carbohydrates`
+    * `sugar`
+    * `dietary_fiber`
+    * `vitamin_c`
+    * `vitamin_a`
+    * `iron`
+* `Traits`: information on dietary concerns pertinent to an `Item`.
+    * `item`
+    * `item_id`
+    * `alcohol`
+    * `nuts`
+    * `shellfish`
+    * `peanut`
+    * `dairy`
+    * `eggs`
+    * `vegan`
+    * `pork`
+    * `seafood`
+    * `soy`
+    * `wheat`
+    * `gluten`
+    * `vegetarian`
+    * `gluten_free`
+    * `facility_warning`: string describing any additional dietary concerns.
+
 
 See `example.py` for several usage examples.
 
