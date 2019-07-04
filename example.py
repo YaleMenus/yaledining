@@ -6,7 +6,7 @@ api = yaledining.YaleDining()
 # Test parameters obtained from API documentation.
 locations = api.locations()
 print('There are %d locations, the name of one of them is %s' % (len(locations), locations[5].name))
-location = api.location('Pierson')
+location = api.location('Hopper')
 print('%s is located at %s (latitude %f) and its phone number is %s.' % (location.name,
                                                                          location.address,
                                                                          location.latitude,
