@@ -16,6 +16,7 @@ print('The first manager\'s email is ' + location.managers[0].email)
 meals = location.meals
 print('It has %d meals currently posted.' % len(meals))
 for meal in meals:
+    print('-' * 10)
     print(meal.name + ':')
     for item in meal.items:
         print('%s %s vegetarian' % (item.name, 'is' if item.traits.vegetarian else 'isn\'t'))

@@ -43,20 +43,19 @@ class YaleDining:
         """
         return [Location(raw, self) for raw in self.get('locations.cfm')]
 
+    def _decompose(self, string: str):
+        words = [unidecode(word.lower()) for word in string.split()]
+        return [word for word in words if word not in ("cafe",)]
+
     def _lenient_equals(self, a, b):
         """
         Perform a series of decompositions on unequal location names to see if they're close enough.
         :param a: first name.
         :param b: second name.
         """
-        # These two comparisons should be split up because of locations whose names start with "Café"
-        a = unidecode(a.lower())
-        b = unidecode(b.lower())
-        if a == b: return True
-        a = a.split()[0]
-        b = b.split()[0]
-        if a == b: return True
-        return False
+        a = self._decompose(a)
+        b = self._decompose(b)
+        return not set(a).isdisjoint(b)
 
     def location(self, identifier, lenient_matching: bool = True):
         """
