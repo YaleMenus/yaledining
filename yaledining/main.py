@@ -9,7 +9,7 @@ class ConnectionError(Exception):
 
 
 class YaleDining:
-    API_ROOT = 'http://www.yaledining.org/fasttrack/'
+    API_ROOT = 'https://www.yaledining.org/fasttrack/'
     API_VERSION = 3
 
     def __init__(self):
