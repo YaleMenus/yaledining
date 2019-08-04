@@ -54,6 +54,8 @@ class Location(_base_model):
     def meals(self):
         return self.api.meals(self.id)
 
+    def feedback(self, *args, **kwargs):
+        return self.api.feedback(self.id, *args, **kwargs)
 
 class Meal(_base_model):
     def __init__(self, raw: dict, api):
