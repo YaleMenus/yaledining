@@ -83,7 +83,6 @@ See more examples in `example.py`.
     * `email`
 * `Meal`: a single meal.
     * `id`
-    * `items`: a list of `Item`s being served in this meal.
     * `location_id`
     * `location_code`
     * `location_name`
