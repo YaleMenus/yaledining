@@ -13,10 +13,6 @@ class _base_model():
         return datetime.datetime.strptime(raw, '%H:%M %p').time()
 
 
-def _make_model(class_name):
-    return type(class_name, (_base_model,), {})
-
-
 class Manager:
     """
     A manager for a dining location.
