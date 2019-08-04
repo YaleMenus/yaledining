@@ -122,3 +122,25 @@ class YaleDining:
         :return: list of string-format ingredient names, in descending order of prevalence.
         """
         return [raw['INGREDIENT'] for raw in self.get('menuitem-ingredients.cfm', params={'MENUITEMID': item_id})]
+
+    def feedback(self, location_id, cleanliness, service, food, date, meal_period, email, comments):
+        """
+        Submit feedback to Yale Hospitality through an undocumented endpoint.
+        :param location_id: ID of location on which you're giving feedback.
+        :param cleanliness: 1-5 score of location cleanliness.
+        :param service: 1-5 score of service quality.
+        :param food: 1-5 score of food quality.
+        :param date: MM/DD/YYYY date about which you want to submit data. Defaults to current day.
+        :param meal_period: meal you're giving feedback for—"Breakfast", "Brunch", "Lunch", or "Dinner".
+        :param email: your email.
+        :param comments: further details.
+        """
+        raw = self.get('location-feedback-process.cfm', params={'Id_Location': location_id,
+                                                                'Cleanliness': cleanliness,
+                                                                'Service': service,
+                                                                'Food': food,
+                                                                'DateOfFeedback': date,
+                                                                'MealPeriod': meal_period,
+                                                                'EmailFrom': email,
+                                                                'Comments': comments})
+        print(raw)
