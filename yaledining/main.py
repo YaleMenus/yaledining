@@ -15,7 +15,7 @@ class YaleDining:
     def __init__(self):
         pass
 
-    def get(self, endpoint: str, params: dict = {}):
+    def get(self, endpoint: str, params: dict = {}, json=True):
         """
         Make a GET request to the dining API.
 
@@ -29,13 +29,16 @@ class YaleDining:
         request = requests.get(self.API_ROOT + endpoint, params=custom_params)
         if not request.ok:
             raise ConnectionError('API request failed.')
-        data = request.json()
-        # Restructure data into a list of dictionaries for easier manipulation
-        data = [
-            {data['COLUMNS'][index]: entry[index] for index in range(len(entry))}
-            for entry in data['DATA']
-        ]
-        return data
+        if json:
+            data = request.json()
+            # Restructure data into a list of dictionaries for easier manipulation
+            data = [
+                {data['COLUMNS'][index]: entry[index] for index in range(len(entry))}
+                for entry in data['DATA']
+            ]
+            return data
+        else:
+            return request.text
 
     def locations(self):
         """
@@ -134,6 +137,7 @@ class YaleDining:
         :param meal_period: meal you're giving feedback for—"Breakfast", "Brunch", "Lunch", or "Dinner".
         :param email: your email.
         :param comments: further details.
+        :return: whether request was successful.
         """
         raw = self.get('location-feedback-process.cfm', params={'Id_Location': location_id,
                                                                 'Cleanliness': cleanliness,
@@ -142,5 +146,5 @@ class YaleDining:
                                                                 'DateOfFeedback': date,
                                                                 'MealPeriod': meal_period,
                                                                 'EmailFrom': email,
-                                                                'Comments': comments})
-        print(raw)
+                                                                'Comments': comments}, json=False)
+        return raw == str(1)
