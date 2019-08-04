@@ -32,7 +32,7 @@ class Location(_base_model):
     def __init__(self, raw: dict, api):
         super().__init__(raw, api)
         self.id = int(raw['ID_LOCATION'])
-        self.location_code = int(raw['LOCATIONCODE'])
+        self.code = int(raw['LOCATIONCODE'])
         self.name = raw['DININGLOCATIONNAME']
         # TODO: enum?
         self.type = raw['TYPE']
@@ -63,14 +63,14 @@ class Meal(_base_model):
     def __init__(self, raw: dict, api):
         super().__init__(raw, api)
         self.id = int(raw['ID'])
-        self.items = []
+        self.name = raw['MEALNAME']
+        self.code = int(raw['MEALCODE'])
+
 
         self.location_id = int(raw['ID_LOCATION'])
         self.location_code = int(raw['LOCATIONCODE'])
         self.location_name = raw['LOCATION']
 
-        self.name = raw['MEALNAME']
-        self.code = int(raw['MEALCODE'])
         # Dates are formatted like:
         # June, 18 2019 00:00:00
         # TODO: should we provide the string format as well?
@@ -86,6 +86,8 @@ class Meal(_base_model):
         self.close_time = self.parse_time(self.raw_close_time)
         self.is_default_meal = bool(raw['ISDEFAULTMEAL'])
         self.is_menu = bool(raw['ISMENU'])
+
+        self.items = []
 
 
 class Item(_base_model):
