@@ -36,8 +36,8 @@ class Location(_base_model):
         self.percent_capacity = 10 * self.capacity if self.capacity is not None else None
         self.geolocation = raw['GEOLOCATION']
         self.latitude, self.longitude = tuple([float(coordinate) for coordinate in self.geolocation.split(',')])
-        self.closed = bool(raw['ISCLOSED'])
-        self.open = not self.closed
+        self.is_closed = bool(raw['ISCLOSED'])
+        self.is_open = not self.is_closed
         self.address = raw['ADDRESS']
         self.phone = raw['PHONE']
         managers = []
