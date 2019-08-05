@@ -1,20 +1,20 @@
 # yaledining [![PyPI version](https://badge.fury.io/py/yaledining.svg)](https://badge.fury.io/py/yaledining)
 
-> Python library for interfacing with the Yale Dining API.
+> Python library for interfacing with the Yale Dining API, supporting the entire documented API plus undocumented endpoints.
 
 [API documentation](https://developers.yale.edu/yale-dining)
 
 ## Guiding principles
-This API seeks to enable Pythonic code using Yale Dining API data. For this reason, original names and unpleasant styles of data storage and access are often overridden.
+This API seeks to enable Pythonic code using Yale Dining API data. For this reason, names and suboptimal data storage styles are often overridden.
 
 For example:
-- Names are put in standardized, Pythonic snake case (eg: `DININGLOCATIONNAME` becomes `dining_location_name`)
+- Names are put in standardized, Pythonic snake case (eg: `ISDEFAULTMEAL` becomes `is_default_meal`)
 - Some clumsy naming is redone entirely (eg: locations' `ID_LOCATION` field simply is called `id` since the fact that it identifies a `Location` is implicit)
 - More intuitive types are used, for example booleans over 0/1 integers
 - `Location`'s `GEOLOCATION` property, while still accessible through `geolocation`, can be accessed through `latitude` and `longitude` propeties as well
 - `Location` managers can be accessed as their own objects through the tuple `Location.managers`, with easier `name` and `email` properties
 - Menu data from the API is split into `Meal` and `Item` objects to decrease data duplication and increase clarity
-- `Meal` date and time fields use `datetime` and `time`
+- `Meal` date and time fields use `datetime.date` and `datetime.time`
 
 If you do **NOT** desire to use these enhancements, you may get the `raw` property of an object this wrapper returns:
 ```py
@@ -53,6 +53,9 @@ This API does not require authentication.
 - `traits(item_id)`: get traits data for a menu item, predominantly boolean values stating whether the item conforms to various dietary restrictions, contains allergens, etc.). Using `Item.traits` is preferred if you already have an `Item` object.
 - `ingredients(item_id)`: get a list of ingredients for a menu item, each in `str` format. Using `Item.ingredients` is preferred if you already have an `Item` object.
 
+## Special Function
+- `feedback(location_id, cleanliness, service, food, email, comments, meal_period, [date])`: submit feedback to Yale Hospitality using an undocumented endpoint.
+
 Note that it almost always cleaner to use builder syntax such as:
 ```py
 meal = api.location('Hopper').meals[0]
@@ -78,6 +81,7 @@ See more examples in `example.py`.
     * `phone`
     * `managers`: tuple of `Manager`s.
     * `meals`: shortcut to get `Meal`s from the current location.
+    * `feedback(cleanliness, service, food, email, comments, meal_period, [date])`: shortcut to submit feedback for current location.
 * `Manager`: a manager for a location, stored inside `Location` objects.
     * `name`
     * `email`
@@ -144,6 +148,8 @@ See `example.py` for several usage examples.
 
 ## Author
 [Erik Boesen](https://github.com/ErikBoesen)
+
+This software isn't endorsed by Yale Dining, Yale Hospitality, or Yale University.
 
 ## License
 [GPL](LICENSE)
