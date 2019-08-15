@@ -75,8 +75,8 @@ See more examples in `example.py`.
     * `geolocation`
     * `latitude`
     * `longitude`
-    * `closed`
-    * `open`
+    * `is_open`
+    * `is_closed`
     * `address`
     * `phone`
     * `managers`: tuple of `Manager`s.
