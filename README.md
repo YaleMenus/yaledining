@@ -53,9 +53,6 @@ This API does not require authentication.
 - `traits(item_id)`: get traits data for a menu item, predominantly boolean values stating whether the item conforms to various dietary restrictions, contains allergens, etc.). Using `Item.traits` is preferred if you already have an `Item` object.
 - `ingredients(item_id)`: get a list of ingredients for a menu item, each in `str` format. Using `Item.ingredients` is preferred if you already have an `Item` object.
 
-## Special Function
-- `feedback(location_id, cleanliness, service, food, email, comments, meal_period, [date])`: submit feedback to Yale Hospitality using an undocumented endpoint.
-
 Note that it almost always cleaner to use builder syntax such as:
 ```py
 meal = api.location('Hopper').meals[0]
@@ -63,6 +60,9 @@ item = meal.items[0]
 item.nutrition.calories  # => 340
 ```
 See more examples in `example.py`.
+
+## Special Functions
+- `feedback(location_id, cleanliness, service, food, email, comments, meal_period, [date])`: submit feedback to Yale Hospitality using an undocumented endpoint.
 
 ## Models
 * `Location`: a dining location.
@@ -142,7 +142,6 @@ See more examples in `example.py`.
     * `vegetarian`
     * `gluten_free`
     * `facility_warning`: string describing any additional dietary concerns.
-
 
 See `example.py` for several usage examples.
 
