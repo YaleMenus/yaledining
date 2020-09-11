@@ -2,7 +2,7 @@
 
 > Python library for interfacing with the Yale Dining API, supporting the entire documented API plus undocumented endpoints.
 
-[API documentation](https://developers.yale.edu/yale-dining)
+NOTE: The legacy Yale Dining API has been deprecated and Yale is not updating the data it provides. A new platform hosted by JAMIX, which does not have an open API, has replaced it. The [YaleDine](https://github.com/ErikBoesen/YaleDine) project has been started to build an unofficial API and surrounding software ecosystem to re-allow developers to make use of Yale Dining data. The new API should be available by October 2020, at which point this project will be rewritten to interact with that hosted API instead.
 
 ## Guiding principles
 This API seeks to enable Pythonic code using Yale Dining API data. For this reason, names and suboptimal data storage styles are often overridden.
