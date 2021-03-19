@@ -10,56 +10,31 @@ class ConnectionError(Exception):
 
 
 class YaleDining:
-    API_ROOT = 'https://www.yaledining.org/fasttrack/'
-    API_VERSION = 3
-
     def __init__(self):
-        pass
+        raise Exception('The YaleDining class has been deprecated in v2.0 of this package. Use API instead.')
+
+
+class API:
+    API_ROOT = 'https://yaledine.com/api/'
 
     def get(self, endpoint: str, params: dict = {}, json=True):
         """
-        Make a GET request to the dining API.
+        Make a GET request to the API.
 
         :param endpoint: path to resource desired.
         :param params: dictionary of custom params to add to request.
         """
-        custom_params = {
-            'version': self.API_VERSION,
-        }
-        custom_params.update(params)
-        request = requests.get(self.API_ROOT + endpoint, params=custom_params)
-        if not request.ok:
-            raise ConnectionError('API request failed.')
-        if json:
-            data = request.json()
-            # Restructure data into a list of dictionaries for easier manipulation
-            data = [
-                {data['COLUMNS'][index]: entry[index] for index in range(len(entry))}
-                for entry in data['DATA']
-            ]
-            return data
+        request = requests.get(self.API_ROOT + endpoint, params=params)
+        if request.ok:
+            return request.json()
         else:
-            return request.text
+            raise ConnectionError('API request failed.')
 
     def locations(self):
         """
         Get all locations available from the dining API.
         """
         return [Location(raw, self) for raw in self.get('locations.cfm')]
-
-    def _decompose(self, string: str):
-        words = [unidecode(word.lower()) for word in string.split()]
-        return [word for word in words if word not in ("cafe",)]
-
-    def _lenient_equals(self, a, b):
-        """
-        Perform a series of decompositions on unequal location names to see if they're close enough.
-        :param a: first name.
-        :param b: second name.
-        """
-        a = self._decompose(a)
-        b = self._decompose(b)
-        return not set(a).isdisjoint(b)
 
     def location(self, identifier, lenient_matching: bool = True):
         """
