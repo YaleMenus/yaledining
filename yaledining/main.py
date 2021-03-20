@@ -68,24 +68,30 @@ class API:
             params['endDate'] = self._date(end_date)
         return [Meal for meal in self.get(endpoint, params=params)]
 
-    def nutrition(self, item_id: int):
+    def meal(self, id: int):
+        """
+        Get a single meal by ID.
+        :param id: ID of meal to get.
+        """
+        return Meal(self.get(f'meals/{id}'))
+
+    def meal_items(self, meal_id: int):
+        """
+        Get items in a given meal.
+        :param meal_id: ID of meal to get items for.
+        """
+        return [Item(raw) for raw in self.get(f'meals/{meal_id}/items')]
+
+    def item(self, id: int):
+        """
+        Get a single item.
+        :param id: ID of item to get.
+        """
+        return Item(self.get(f'items/{id}'))
+
+    def item_nutrition(self, item_id: int):
         """
         Get nutrition data for a menu item.
-        :param item_id: ID of item to get data on.
+        :param item_id: ID of item to get nutrition data for.
         """
-        return Nutrition(self.get('menuitem-nutrition.cfm', params={'MENUITEMID': item_id})[0], self)
-
-    def traits(self, item_id: int):
-        """
-        Get traits data of a menu item, for example whether it's vegetarian, whether it contains pork, nuts, etc.
-        :param item_id: ID of item to get data on.
-        """
-        return Traits(self.get('menuitem-codes.cfm', params={'MENUITEMID': item_id})[0], self)
-
-    def ingredients(self, item_id: int):
-        """
-        Get a list of ingredients of a menu item.
-        :param item_id: ID of item to get data on.
-        :return: list of string-format ingredient names, in descending order of prevalence.
-        """
-        return [raw['INGREDIENT'] for raw in self.get('menuitem-ingredients.cfm', params={'MENUITEMID': item_id})]
+        return Nutrition(self.get(f'items/{item_id}/nutrition', self)
