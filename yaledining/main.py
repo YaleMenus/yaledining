@@ -16,6 +16,7 @@ class YaleDining:
 
 class API:
     API_ROOT = 'https://yaledine.com/api/'
+    DATE_FMT = '%Y-%m-%d'
 
     def get(self, endpoint: str, params: dict = {}, json=True):
         """
@@ -30,38 +31,38 @@ class API:
         else:
             raise ConnectionError('API request failed.')
 
-    def locations(self):
-        """
-        Get all locations available from the dining API.
-        """
-        return [Location(raw, self) for raw in self.get('locations.cfm')]
-
-    def location(self, identifier, lenient_matching: bool = True):
-        """
-        Get a single location by name or ID.
-        :param identifier: numerical ID or name of location. If an integer is passed or a string that could be converted to
-                           an integer, it will be assumed to be an ID. Otherwise, a location will be searched for by name.
-        :param lenient_matching: if a name is provided, should close matches be tolerated as well?
-        """
-        if type(identifier) == str and identifier.isdigit():
-            identifier = int(identifier)
-        for location in self.locations():
-            if type(identifier) == int:
-                if location.id == identifier:
-                    return location
-            else:
-                if location.name == identifier or lenient_matching and self._lenient_equals(location.name, identifier):
-                    return location
+    def _date(self, raw):
+        if type(raw) == str:
+            return raw
+        if type(raw) in (datetime.date, datetime.datetime):
+            return raw.strftime(self.DATE_FMT)
         return None
 
-    def meals(self, location_id: int):
+    def halls(self):
         """
-        Get all currently listed meals items for a specified location
-        The API stores meals as a list of "menus" which each have data on one item and repeated data on a meal.
-        To increase intuitiveness, we separate meal details into a Meal object, which has many Items.
-        :param location_id: ID of location of which to get menus.
+        Get all halls available from the API.
         """
-        raw = self.get('menus.cfm', params={'location': location_id})
+        return [Hall(raw, self) for raw in self.get('halls')]
+
+    def hall(self, id: str):
+        """
+        Get a single dining hall by ID.
+        :param id: ID (two-letter abbreviation) of the hall you want.
+        """
+        return Hall(self.get(f'hall/{id}', self))
+
+    def meals(self, hall_id: str = None, date=None, start_date=None, end_date=None):
+        """
+        Get meals for a given hall (or all halls if hall_id is omitted), for a given date or within a range.
+        :param hall_id: ID (two-letter abbreviation) of hall for which to get menus.
+        :param date: single date to get meals for. Can be YYYY-MM-DD string or datetime.date.
+        :param start_date: start of date range to get meals for. Ignored if date is passed. Can be YYYY-MM-DD string or datetime.date.
+        :param end_date: end of date range to get meals for. Ignored if date is specified. Can be YYYY-MM-DD string or datetime.date.
+        """
+        endpoint = f'halls/{hall_id}/meals' if hall_id else 'meals'
+        params = {}
+        if date:
+            params['date'] = self._date(
 
         # Dictionary mapping date strings to dictionaries mapping meal names to lists of items
         days = {}
