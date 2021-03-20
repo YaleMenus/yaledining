@@ -116,11 +116,11 @@ class API:
         Get a single item.
         :param id: ID of item to get.
         """
-        return Item(self.get(f'items/{id}'))
+        return Item(self.get(f'items/{id}'), self)
 
     def item_nutrition(self, item_id: int):
         """
         Get nutrition data for a menu item.
         :param item_id: ID of item to get nutrition data for.
         """
-        return Nutrition(self.get(f'items/{item_id}/nutrition', self)
+        return Nutrition(self.get(f'items/{item_id}/nutrition'), self)

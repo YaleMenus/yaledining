@@ -5,7 +5,7 @@ class _base_model:
     def __init__(self, raw: dict, api):
         self.raw = raw
         for key in raw:
-            setattr(key, raw[key])
+            setattr(self, key, raw[key])
         self.api = api
 
 
@@ -15,7 +15,7 @@ class Hall(_base_model):
 
     @property
     def managers(self):
-        return self.api.managers(self.id)
+        return self.api.hall_managers(self.id)
 
 
 class Manager(_base_model):
