@@ -9,16 +9,17 @@ class _base_model:
         self.api = api
 
 
-
 class Hall(_base_model):
+    def meals(self, *args, **kwargs):
+        return self.api.meals(self.id, *args, **kwargs)
+
     @property
-    def meals(self):
-        return self.api.meals(self.id)
+    def managers(self):
+        return self.api.managers(self.id)
 
 
 class Manager(_base_model):
     pass
-
 
 
 class Meal(_base_model):
@@ -30,9 +31,6 @@ class Meal(_base_model):
 class Item(_base_model):
     @property
     def nutrition(self):
-        """
-        Get nutrition information for the current item.
-        """
         return self.api.nutrition(self.id)
 
 
