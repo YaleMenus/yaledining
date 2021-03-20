@@ -88,27 +88,28 @@ class API:
         elif start_date and end_date:
             params['startDate'] = self._date(start_date)
             params['endDate'] = self._date(end_date)
-        return [Meal for meal in self.get(endpoint, params=params)]
+        return [Meal(raw, self) for raw in self.get(endpoint, params=params)]
 
     def meal(self, id: int):
         """
         Get a single meal by ID.
         :param id: ID of meal to get.
         """
-        return Meal(self.get(f'meals/{id}'))
+        return Meal(self.get(f'meals/{id}'), self)
 
     def meal_items(self, meal_id: int):
         """
         Get items in a given meal.
         :param meal_id: ID of meal to get items for.
         """
-        return [Item(raw) for raw in self.get(f'meals/{meal_id}/items')]
+        return [Item(raw, self) for raw in self.get()]
 
-    def items(self):
+    def items(self, meal_id: int = None):
         """
         Get all items served.
         """
-        return [Item(raw) for raw in self.get('items')]
+        endpoint = f'meals/{meal_id}/items' if meal_id else 'items'
+        return [Item(raw, self) for raw in self.get(endpoint)]
 
     def item(self, id: int):
         """
