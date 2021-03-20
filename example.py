@@ -20,16 +20,7 @@ for meal in meals:
     print('-' * 10)
     print(meal.name + ':')
     for item in meal.items:
-        print('%s %s vegetarian' % (item.name, 'is' if item.traits.vegetarian else 'isn\'t'))
+        print('%s %s contain meat' % (item.name, 'does' if item.meat else 'doesn\'t'))
         print('Its ingredients are ' + item.ingredients)
         nutrition = item.nutrition
         print('One serving is %s, and contains %d calories.' % (nutrition.serving_size, nutrition.calories))
-
-# Or you can pass a menu item ID directly
-print(api.traits(5908402))
-
-# You can also search for halls by ID or name
-print(api.hall(1).name)
-print(api.hall('Slifka Center').open)
-# By default, similar results will be matched as well
-print(api.hall('wést').name)  # "West Campus"

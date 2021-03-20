@@ -31,7 +31,7 @@ class Meal(_base_model):
 class Item(_base_model):
     @property
     def nutrition(self):
-        return self.api.nutrition(self.id)
+        return self.api.item_nutrition(self.id)
 
 
 class Nutrition(_base_model):

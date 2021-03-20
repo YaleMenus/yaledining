@@ -102,7 +102,7 @@ class API:
         Get items in a given meal.
         :param meal_id: ID of meal to get items for.
         """
-        return [Item(raw, self) for raw in self.get()]
+        return self.items(meal_id)
 
     def items(self, meal_id: int = None):
         """
