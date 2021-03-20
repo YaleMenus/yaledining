@@ -58,6 +58,13 @@ class API:
         """
         return [Manager(raw) for raw in self.get(f'halls/{hall_id}/managers')]
 
+    def hall_meals(self, hall_id: str, *args, **kwargs):
+        """
+        Get meals for a given hall. Accepts same parameters as meals.
+        :param hall_id: ID (two-letter abbreviation of hall for which to get menus.
+        """
+        return self.meals(hall_id, *args, **kwargs)
+
     def meals(self, hall_id: str = None, date=None, start_date=None, end_date=None):
         """
         Get meals for a given hall (or all halls if hall_id is omitted), for a given date or within a range.
