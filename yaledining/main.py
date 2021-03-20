@@ -62,24 +62,11 @@ class API:
         endpoint = f'halls/{hall_id}/meals' if hall_id else 'meals'
         params = {}
         if date:
-            params['date'] = self._date(
-
-        # Dictionary mapping date strings to dictionaries mapping meal names to lists of items
-        days = {}
-        for raw_item in raw:
-            date = raw_item['MENUDATE']
-            meal_code = raw_item['MEALCODE']
-            item = Item(raw_item, self)
-            if date not in days:
-                days[date] = {}
-            if meal_code not in days[date]:
-                days[date][meal_code] = Meal(raw_item, self)
-            days[date][meal_code].items.append(item)
-        meals = []
-        for day in days:
-            for meal in days[day]:
-                meals.append(days[day][meal])
-        return meals
+            params['date'] = self._date(date)
+        elif start_date and end_date:
+            params['startDate'] = self._date(start_date)
+            params['endDate'] = self._date(end_date)
+        return [Meal for meal in self.get(endpoint, params=params)]
 
     def nutrition(self, item_id: int):
         """
