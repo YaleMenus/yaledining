@@ -49,21 +49,29 @@ class API:
         Get a single dining hall by ID.
         :param id: ID (two-letter abbreviation) of the hall you want.
         """
-        return Hall(self.get(f'halls/{id}', self))
+        return Hall(self.get(f'halls/{id}'), self)
 
     def hall_managers(self, hall_id: str):
         """
         Get managers for a dining hall.
         :param hall_id: ID (two-letter abbreviation) of the hall you want managers for.
         """
-        return [Manager(raw) for raw in self.get(f'halls/{hall_id}/managers')]
+        return self.managers(hall_id)
 
     def hall_meals(self, hall_id: str, *args, **kwargs):
         """
         Get meals for a given hall. Accepts same parameters as meals.
-        :param hall_id: ID (two-letter abbreviation of hall for which to get menus.
+        :param hall_id: ID (two-letter abbreviation) of hall for which to get menus.
         """
         return self.meals(hall_id, *args, **kwargs)
+
+    def managers(self, hall_id: str = None):
+        """
+        Get managers for a given hall, or all managers if hall_id is omitted.
+        :param hall_id: ID (two-letter abbreviation) of hall for which to get managers.
+        """
+        endpoint = f'halls/{hall_id}/managers' if hall_id else 'managers'
+        return [Manager(raw, self) for raw in self.get(endpoint)]
 
     def meals(self, hall_id: str = None, date=None, start_date=None, end_date=None):
         """
