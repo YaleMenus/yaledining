@@ -89,6 +89,12 @@ class API:
         """
         return [Item(raw) for raw in self.get(f'meals/{meal_id}/items')]
 
+    def items(self):
+        """
+        Get all items served.
+        """
+        return [Item(raw) for raw in self.get('items')]
+
     def item(self, id: int):
         """
         Get a single item.
