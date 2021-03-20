@@ -18,7 +18,7 @@ class API:
     API_ROOT = 'https://yaledine.com/api/'
     DATE_FMT = '%Y-%m-%d'
 
-    def get(self, endpoint: str, params: dict = {}, json=True):
+    def _get(self, endpoint: str, params: dict = {}, json=True):
         """
         Make a GET request to the API.
 
@@ -42,14 +42,14 @@ class API:
         """
         Get all halls available from the API.
         """
-        return [Hall(raw, self) for raw in self.get('halls')]
+        return [Hall(raw, self) for raw in self._get('halls')]
 
     def hall(self, id: str):
         """
         Get a single dining hall by ID.
         :param id: ID (two-letter abbreviation) of the hall you want.
         """
-        return Hall(self.get(f'halls/{id}'), self)
+        return Hall(self._get(f'halls/{id}'), self)
 
     def hall_managers(self, hall_id: str):
         """
@@ -71,7 +71,7 @@ class API:
         :param hall_id: ID (two-letter abbreviation) of hall for which to get managers.
         """
         endpoint = f'halls/{hall_id}/managers' if hall_id else 'managers'
-        return [Manager(raw, self) for raw in self.get(endpoint)]
+        return [Manager(raw, self) for raw in self._get(endpoint)]
 
     def meals(self, hall_id: str = None, date=None, start_date=None, end_date=None):
         """
@@ -88,14 +88,14 @@ class API:
         elif start_date and end_date:
             params['startDate'] = self._date(start_date)
             params['endDate'] = self._date(end_date)
-        return [Meal(raw, self) for raw in self.get(endpoint, params=params)]
+        return [Meal(raw, self) for raw in self._get(endpoint, params=params)]
 
     def meal(self, id: int):
         """
         Get a single meal by ID.
         :param id: ID of meal to get.
         """
-        return Meal(self.get(f'meals/{id}'), self)
+        return Meal(self._get(f'meals/{id}'), self)
 
     def meal_items(self, meal_id: int):
         """
@@ -109,18 +109,18 @@ class API:
         Get all items served.
         """
         endpoint = f'meals/{meal_id}/items' if meal_id else 'items'
-        return [Item(raw, self) for raw in self.get(endpoint)]
+        return [Item(raw, self) for raw in self._get(endpoint)]
 
     def item(self, id: int):
         """
         Get a single item.
         :param id: ID of item to get.
         """
-        return Item(self.get(f'items/{id}'), self)
+        return Item(self._get(f'items/{id}'), self)
 
     def item_nutrition(self, item_id: int):
         """
         Get nutrition data for a menu item.
         :param item_id: ID of item to get nutrition data for.
         """
-        return Nutrition(self.get(f'items/{item_id}/nutrition'), self)
+        return Nutrition(self._get(f'items/{item_id}/nutrition'), self)
