@@ -1,27 +1,8 @@
 # yaledining [![PyPI version](https://badge.fury.io/py/yaledining.svg)](https://badge.fury.io/py/yaledining)
 
-> Python library for interfacing with the Yale Dining API, supporting the entire documented API plus undocumented endpoints.
+> Python library for obtaining Yale Dining data from the [YaleDine](https://yaledine.com) API.
 
-NOTE: The legacy Yale Dining API has been deprecated and Yale is not updating the data it provides. A new platform hosted by JAMIX, which does not have an open API, has replaced it. The [YaleDine](https://github.com/ErikBoesen/YaleDine) project has been started to build an unofficial API and surrounding software ecosystem to re-allow developers to make use of Yale Dining data. The new API should be available by October 2020, at which point this project will be rewritten to interact with that hosted API instead.
-
-## Guiding principles
-This API seeks to enable Pythonic code using Yale Dining API data. For this reason, names and suboptimal data storage styles are often overridden.
-
-For example:
-- Names are put in standardized, Pythonic snake case (eg: `ISDEFAULTMEAL` becomes `is_default_meal`)
-- Some clumsy naming is redone entirely (eg: locations' `ID_LOCATION` field simply is called `id` since the fact that it identifies a `Location` is implicit)
-- More intuitive types are used, for example booleans over 0/1 integers
-- `Location`'s `GEOLOCATION` property, while still accessible through `geolocation`, can be accessed through `latitude` and `longitude` propeties as well
-- `Location` managers can be accessed as their own objects through the tuple `Location.managers`, with easier `name` and `email` properties
-- Menu data from the API is split into `Meal` and `Item` objects to decrease data duplication and increase clarity
-- `Meal` date and time fields use `datetime.date` and `datetime.time`
-
-If you do **NOT** desire to use these enhancements, you may get the `raw` property of an object this wrapper returns:
-```py
-location = api.location('Branford')  # -> returns Location object
-location.raw  # -> {'ID_LOCATION': '2', ... }
-```
-Doing so will get a dictionary of an object in similar format to how it's normally returned.
+NOTE: The legacy Yale Dining API has been deprecated and Yale is not updating the data it provides. As of v2, this package instead uses the [YaleDine](https://github.com/ErikBoesen/YaleDine) API, an unofficial student project that scrapes Yale's various dining websites and provides clean and standardized JSON-formatted menus.
 
 ## Setup
 First, install the module:
@@ -39,67 +20,43 @@ import yaledining
 Before using the library, you must instantiate its class, for example:
 
 ```py
-api = yaledining.YaleDining()
+api = yaledining.API()
 # "api" name is just an example, this may be anything you desire
 ```
 
 This API does not require authentication.
 
 ## Retrieval Functions
-- `locations()`: get a list of all `Location` objects on campus
-- `location(identifier, lenient_matching=True)`: get a single `Location` object represented by either a numerical location ID or a name in `str` format. `lenient_matching` can be specified to match similarly-named locations.
-- `meals(location_id)`: get a list of `Meal` objects representing all current and upcoming meals listed for the `location_id` specified. It is likely preferable to use the `Location.meals` method if you already have a `Location` object; this will abstract away ID manipulation. Note that you must access the `items` property to get data on specific items. While the standard API merges repeated meal data with individual menu items and calls its model "menus," this wrapper separates data into `Meal` and `Item` objects. This means that there is no direct API request to get items, but you can simply use `meals(location_id).items` to the same effect.
-- `nutrition(item_id)`: get nutrition data for a menu item. Using `Item.nutrition` is preferred if you already have an `Item` object to avoid ID manipulation.
-- `traits(item_id)`: get traits data for a menu item, predominantly boolean values stating whether the item conforms to various dietary restrictions, contains allergens, etc.). Using `Item.traits` is preferred if you already have an `Item` object.
-- `ingredients(item_id)`: get a list of ingredients for a menu item, each in `str` format. Using `Item.ingredients` is preferred if you already have an `Item` object.
+- `halls()`: get a list of all dining `Hall`s on campus.
+- `hall(id)`: get a single `Hall` object by ID (two-letter abbreviation).
+- `hall_managers(hall_id)`: get managers for a `Hall`.
+- `hall_meals(hall_id, [date], [start_date], [end_date])`: get a list of `Meal` objects from a certain hall. Equivalent to `meals`, but with mandatory `hall_id`.
+- `managers([hall_id]): get a list of `Manager` objects, from a single hall if specified or for all halls if not.
+- `meals([hall_id], [date], [start_date], [end_date])`: get a list of `Meal` objects representing meals listed for the `hall_id` specified, or all halls if omitted. Specify `date` to get meals for a certain date, or `start_date` and `end_date` to get meals for an inclusive range of dates. Omit all three to get all meals.
+- `meal(id)`: get single `Meal` by ID.
+- `meal_items(meal_id)`: get a list of menu `Item`s included in a meal with given ID.
+- `items([meal_id])`: get a list of `Item`s served in a given meal, or all items.
+- `item_nutrition(item_id)`: get nutrition data for a menu item.
 
 Note that it almost always cleaner to use builder syntax such as:
 ```py
-meal = api.location('Hopper').meals[0]
+meal = api.hall('GH').meals(datetime.date.today())[0]
 item = meal.items[0]
 item.nutrition.calories  # => 340
 ```
 See more examples in `example.py`.
 
-## Special Functions
-- `feedback(location_id, cleanliness, service, food, email, comments, meal_period, [date])`: submit feedback to Yale Hospitality using an undocumented endpoint.
-
 ## Models
-* `Location`: a dining location.
-    * `id`
-    * `location_code`
-    * `name`
-    * `type`
-    * `capacity`
-    * `percent_capacity`
-    * `geolocation`
-    * `latitude`
-    * `longitude`
-    * `is_open`
-    * `is_closed`
-    * `address`
-    * `phone`
-    * `managers`: tuple of `Manager`s.
-    * `meals`: shortcut to get `Meal`s from the current location.
-    * `feedback(cleanliness, service, food, email, comments, meal_period, [date])`: shortcut to submit feedback for current location.
-* `Manager`: a manager for a location, stored inside `Location` objects.
+Models follow the schema listed in the [YaleDine API documentation](https://yaledine.com). Shortcut methods provided by this package are listed below for your convenience.
+
+* `Hall`: a dining hall.
+    * `managers`: get `Manager`s for this hall.
+    * `meals(`: get `Meal`s in this hall, providing date parameters as in
+    * `feedback(cleanliness, service, food, email, comments, meal_period, [date])`: shortcut to submit feedback for current hall.
+* `Manager`: a manager for a hall, stored inside `Hall` objects.
     * `name`
     * `email`
 * `Meal`: a single meal.
-    * `id`
-    * `location_id`
-    * `location_code`
-    * `location_name`
-    * `name`
-    * `code`
-    * `raw_date`: string-format date formatted like "June, 18 2019 00:00:00". (Time is always `00:00:00`, actual time can be found in (`raw)`)`open_time`/`close_time` properties
-    * `date`: processed `datetime.date` object for ease of manipulation.
-    * `raw_open_time`: time of day when meal begins, formatted like `08:00 AM`.
-    * `open_time`: `datetime.time` representation of the opening time.
-    * `raw_close_time`: see `raw_open_time`
-    * `close_time`: see `open_time`
-    * `is_default_meal`
-    * `is_menu`
     * `items`: shortcut to get menu `Item`s in this meal.
 * `Item`: a single menu item.
     * `id`
@@ -124,24 +81,6 @@ See more examples in `example.py`.
     * `vitamin_c`
     * `vitamin_a`
     * `iron`
-* `Traits`: information on dietary concerns pertinent to an `Item`.
-    * `item`
-    * `item_id`
-    * `alcohol`
-    * `nuts`
-    * `shellfish`
-    * `peanut`
-    * `dairy`
-    * `eggs`
-    * `vegan`
-    * `pork`
-    * `seafood`
-    * `soy`
-    * `wheat`
-    * `gluten`
-    * `vegetarian`
-    * `gluten_free`
-    * `facility_warning`: string describing any additional dietary concerns.
 
 See `example.py` for several usage examples.
 
