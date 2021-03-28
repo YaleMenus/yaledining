@@ -1,6 +1,6 @@
 # yaledining [![PyPI version](https://badge.fury.io/py/yaledining.svg)](https://badge.fury.io/py/yaledining)
 
-> Python library for obtaining Yale Dining data from the [YaleDine](https://yaledine.com) API.
+> Python library for obtaining Yale Dining data via the [YaleDine](https://yaledine.com) API.
 
 NOTE: The legacy Yale Dining API has been deprecated and Yale is not updating the data it provides. As of v2, this package instead uses the [YaleDine](https://github.com/ErikBoesen/YaleDine) API, an unofficial student project that scrapes Yale's various dining websites and provides clean and standardized JSON-formatted menus.
 
@@ -64,7 +64,7 @@ See `example.py` for several usage examples.
 ## Author
 [Erik Boesen](https://github.com/ErikBoesen)
 
-This software isn't endorsed by Yale Dining, Yale Hospitality, or Yale University.
+This software is not endorsed by Yale Dining, Yale Hospitality, or Yale University.
 
 ## License
 [GPL](LICENSE)
