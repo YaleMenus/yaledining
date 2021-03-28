@@ -51,36 +51,13 @@ Models follow the schema listed in the [YaleDine API documentation](https://yale
 
 * `Hall`: a dining hall.
     * `managers`: get `Manager`s for this hall.
-    * `meals(`: get `Meal`s in this hall, providing date parameters as in
-    * `feedback(cleanliness, service, food, email, comments, meal_period, [date])`: shortcut to submit feedback for current hall.
+    * `meals([date], [start_date], [end_date])`: get `Meal`s in this hall, providing date parameters as in standard `meals` call.
 * `Manager`: a manager for a hall, stored inside `Hall` objects.
-    * `name`
-    * `email`
 * `Meal`: a single meal.
-    * `items`: shortcut to get menu `Item`s in this meal.
+    * `items`: get menu `Item`s in this meal.
 * `Item`: a single menu item.
-    * `id`
-    * `name`
-    * `course`
-    * `course_code`
     * `nutrition`: shortcut to get `Nutrition` for the item.
-    * `traits`: shortcut to get `Traits` for the item.
-    * `ingredients`: shortcut to get list of ingredients for the item.
 * `Nutrition`: index of nutrition facts for an `Item`.
-    * `item`
-    * `item_id`
-    * `serving_size`
-    * `calories`
-    * `protein`
-    * `fat`
-    * `saturated_fat`
-    * `cholesterol`
-    * `carbohydrates`
-    * `sugar`
-    * `dietary_fiber`
-    * `vitamin_c`
-    * `vitamin_a`
-    * `iron`
 
 See `example.py` for several usage examples.
 

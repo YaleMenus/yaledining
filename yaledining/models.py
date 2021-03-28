@@ -10,12 +10,12 @@ class _base_model:
 
 
 class Hall(_base_model):
-    def meals(self, *args, **kwargs):
-        return self.api.meals(self.id, *args, **kwargs)
-
     @property
     def managers(self):
         return self.api.hall_managers(self.id)
+
+    def meals(self, *args, **kwargs):
+        return self.api.meals(self.id, *args, **kwargs)
 
 
 class Manager(_base_model):
