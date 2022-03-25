@@ -15,7 +15,7 @@ class YaleDining:
 
 
 class API:
-    API_ROOT = 'https://yaledine.com/api/'
+    API_ROOT = 'https://api.yalemenus.com/'
     DATE_FMT = '%Y-%m-%d'
 
     def _get(self, endpoint: str, params: dict = {}, json=True):
